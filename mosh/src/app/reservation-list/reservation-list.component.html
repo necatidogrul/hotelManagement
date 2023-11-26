@@ -1,0 +1,66 @@
+<div class="container-fluid" *ngIf="reservations.length>0; then reservationsList else noReservations"></div>
+  <ng-template #reservationsList>
+    <h2>Reservation List</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Last Name</th>
+          <th>Room Type</th>
+          <th>Room Number</th>
+          <th>Arrival</th>
+          <th>Departure</th>
+          <th>Notes</th>  
+          <th>Country</th>
+          <th>Email</th>
+          <th>Phone</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let reservation of reservations">
+          <td>{{ reservation.id }}</td>
+          <td>{{ reservation.customer.firstName | uppercase}}</td>
+          <td>{{ reservation.customer.lastName | uppercase }}</td>
+          <td>{{ reservation.roomType }}</td>
+          <td>{{ reservation.room }}</td>
+          <td>{{ reservation.dateArrival | date }}</td>
+          <td>{{ reservation.dateDeparture | date }}</td>
+          <td>{{ reservation.notes }}
+            <button (click)="addNote(reservation)">Add Note</button>
+          </td>
+          <td>{{ reservation.customer.country }}</td>
+          <td>{{ reservation.customer.email }}</td>
+          <td>{{ reservation.customer.phone }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-template>
+  <ng-template #noReservations>
+    No reservations
+  </ng-template>
+  
+  
+  <div *ngIf="showNotesSection">
+    <h2>Notes</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Last Name</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let reservation of reservations">
+          <td>{{ reservation.id }}</td>
+          <td>{{ reservation.customer.firstName }}</td>
+          <td>{{ reservation.customer.lastName }}</td>
+          <td>{{ getNoteText(reservation) }}
+            <button>Change Note</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

@@ -1,0 +1,13 @@
+<navbar></navbar>
+
+
+
+<app-reservation-list></app-reservation-list>
+
+<button (click)="loadCourses()">Load Courses</button>
+<ul>
+    <li *ngFor="let course of courses; index as i">
+        {{i}} - {{course.name}}
+        <button (click)="onChange(course)">Remove</button>
+    </li>
+</ul>
