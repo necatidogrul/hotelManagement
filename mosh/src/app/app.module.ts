@@ -1,41 +1,32 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { FormsModule } from '@angular/forms';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { PostsComponent } from './posts/posts.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { CustomerListComponent } from './customer-list/customer-list.component';
-import { CustomerComponent } from './customer/customer.component';
 import { CustomersComponent } from './customers.component';
 import { CustomerService } from './customer.service';
-import { TodosComponent } from './todos/todos.component';
 import { ReservationListComponent } from './reservation-list/reservation-list.component';
-import { HomeComponent } from './home/home.component';
-import { RouterModule } from '@angular/router';
-import { PanelComponent } from './panel/panel.component';
-
-
-
+import { FavoriteComponent } from './favorite/favorite.component';
+import { CreateCustomerComponent } from './create-customer/create-customer.component';
+import { NewComponentComponent } from './new-component/new-component.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
-    PostsComponent,
     CustomerListComponent,
-    CustomerComponent,
     CustomersComponent,
-    TodosComponent,
     ReservationListComponent,
-    HomeComponent,
-    PanelComponent
-    
+    FavoriteComponent,
+    CreateCustomerComponent,
+    NewComponentComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
   ],
   providers: [
@@ -43,4 +34,6 @@ import { PanelComponent } from './panel/panel.component';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  
+ }

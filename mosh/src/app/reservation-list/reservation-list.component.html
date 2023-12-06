@@ -1,6 +1,6 @@
 <div class="container-fluid" *ngIf="reservations.length>0; then reservationsList else noReservations"></div>
   <ng-template #reservationsList>
-    <h2>Reservation List</h2>
+    <h2 style="margin: 10px;">Last Reservations</h2>
     <table class="table">
       <thead>
         <tr>
@@ -15,6 +15,7 @@
           <th>Country</th>
           <th>Email</th>
           <th>Phone</th>
+          <th>Favorite</th>
         </tr>
       </thead>
       <tbody>
@@ -27,11 +28,13 @@
           <td>{{ reservation.dateArrival | date }}</td>
           <td>{{ reservation.dateDeparture | date }}</td>
           <td>{{ reservation.notes }}
-            <button (click)="addNote(reservation)">Add Note</button>
           </td>
           <td>{{ reservation.customer.country }}</td>
           <td>{{ reservation.customer.email }}</td>
           <td>{{ reservation.customer.phone }}</td>
+          <td>
+            <app-favorite [item]="reservation" (addNote)="addNoteToReservation($event)"></app-favorite>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -58,7 +61,6 @@
           <td>{{ reservation.customer.firstName }}</td>
           <td>{{ reservation.customer.lastName }}</td>
           <td>{{ getNoteText(reservation) }}
-            <button>Change Note</button>
           </td>
         </tr>
       </tbody>

@@ -1,15 +1,16 @@
 import { Component } from '@angular/core';
-import { CustomerService, Reservation } from '../customer.service';
+import { CustomerService } from '../customer.service';
+import { Reservation} from '../reservation.model'
 
 @Component({
-  selector: 'app-reservation-list',
+  selector: 'reservation-list',
   templateUrl: './reservation-list.component.html',
   styleUrls: ['./reservation-list.component.css']
 })
 export class ReservationListComponent {
   reservations: Array<Reservation> = [];
   notes: { [key: number]: { reservation: Reservation; text: string; } } = {};
-  showNotesSection: boolean = false; // Yeni eklenen satır
+  showNotesSection: boolean = false; 
   constructor(private customerService: CustomerService){
     this.loadReservations(); 
   }
@@ -30,7 +31,6 @@ export class ReservationListComponent {
       }
       this.showNotesSection = true;
 
-      // Reservation nesnesini güncelle
       const updatedReservation = this.reservations.find(res => res.id === reservation.id);
       if (updatedReservation) {
         updatedReservation.notes = this.notes[reservation.id].text;
@@ -47,7 +47,22 @@ export class ReservationListComponent {
   }
 
 
+  addNoteToReservation(reservation: Reservation) {
+    const noteText = prompt('Enter a note for the reservation:');
+    if (noteText !== null) {
+      if (!this.notes[reservation.id]) {
+        this.notes[reservation.id] = { reservation, text: noteText };
+      } else {
+        this.notes[reservation.id].text += '\n' + noteText;
+      }
+      this.showNotesSection = true;
 
+      const updatedReservation = this.reservations.find(res => res.id === reservation.id);
+      if (updatedReservation) {
+        updatedReservation.notes = this.notes[reservation.id].text;
+      }
+    }
+  }
 
   
     
