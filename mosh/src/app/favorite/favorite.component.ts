@@ -7,7 +7,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class FavoriteComponent {
   @Input() item: any; 
-  @Output() addNote = new EventEmitter<any>();
+  @Output() addNote = new EventEmitter <any>();
 
   isFavorite: boolean = false;
 

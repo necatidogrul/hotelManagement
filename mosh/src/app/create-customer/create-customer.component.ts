@@ -57,7 +57,11 @@ export class CreateCustomerComponent {
         },
         error: (error) => {
           this.successMessage = null;
-          this.errorMessage = 'Customer eklenemedi.';
+          if (error.status === 404) {
+            this.errorMessage = 'Müşteri eklenemedi. Sunucu bulunamadı (404).';
+          } else {
+            this.errorMessage = 'Customer eklenemedi. Beklenmeyen bir hata oluştu.';
+          }
           console.error('Müşteri oluşturulurken hata oluştu:', error);
         },
       });
