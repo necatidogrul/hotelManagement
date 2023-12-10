@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { CustomerService } from '../customer.service';
 
 @Component({
-  selector: 'create-customer',
+  selector: 'app-create-customer',
   templateUrl: './create-customer.component.html',
   styleUrls: ['./create-customer.component.css'],
 })
@@ -14,20 +14,32 @@ export class CreateCustomerComponent {
 
   constructor(private fb: FormBuilder, private customerService: CustomerService) {
     this.form = this.fb.group({
-      tcNo: ['string', Validators.required],
+      tcNo: ['', Validators.required],
       passportNo: ['string', Validators.required],
       nationality: ['string', Validators.required],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      middleName: ['string'],
+      middleName: [''],
       gender: [0],
       streetAddress: ['string', Validators.required],
       city: ['string', Validators.required],
       country: ['string', Validators.required],
-      email: ['string', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       phone: ['string', Validators.required],
       notes: ['string', Validators.required],
     });
+  }
+
+  turkishCharacterValidator(): any {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value as string;
+
+      if (/[ğüşıöçĞÜŞİÖÇ]/.test(value)) {
+        return { turkishCharacter: true };
+      }
+
+      return null;
+    };
   }
 
   onSubmit(): void {
@@ -49,20 +61,20 @@ export class CreateCustomerComponent {
         notes: this.form.value.notes,
       };
 
+      this.successMessage = null;
+      this.errorMessage = null;
+
       this.customerService.createCustomer(customerData).subscribe({
         next: (response) => {
-          this.successMessage = 'Customer başarıyla eklendi.';
-          this.errorMessage = null;
-          console.log('Müşteri başarıyla oluşturuldu:', response);
+          this.successMessage = 'Customer eklendi!';
         },
         error: (error) => {
-          this.successMessage = null;
-          if (error.status === 404) {
-            this.errorMessage = 'Müşteri eklenemedi. Sunucu bulunamadı (404).';
+          if (error.status === 409) {
+            this.errorMessage = 'Bu müşteri zaten mevcut.';
           } else {
-            this.errorMessage = 'Customer eklenemedi. Beklenmeyen bir hata oluştu.';
+            this.errorMessage = 'Müşteri eklenemedi.';
+            console.error('Müşteri oluşturulurken hata oluştu:', error);
           }
-          console.error('Müşteri oluşturulurken hata oluştu:', error);
         },
       });
     }

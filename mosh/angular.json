@@ -60,10 +60,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "mosh:build:production"
+              "buildTarget": "mosh:build:production"
             },
             "development": {
-              "browserTarget": "mosh:build:development"
+              "buildTarget": "mosh:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -71,7 +71,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "mosh:build"
+            "buildTarget": "mosh:build"
           }
         },
         "test": {

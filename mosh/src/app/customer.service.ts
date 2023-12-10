@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { Customer } from "./customer.model";
@@ -8,12 +8,22 @@ import { Reservation } from "./reservation.model";
 export class CustomerService{
     private apiUrl= 'http://213.248.166.144:7070/customer/lastReservations';
     private apiUrlCreate = 'http://213.248.166.144:7070/customer/createCustomer';
+    private apiUrlGetCustomer = 'http://213.248.166.144:7070/customer/getCustomerByTcNoEmail';
 
   constructor(private http: HttpClient) {}
 
   createCustomer(customerData: any): Observable<Customer> {
     return this.http.post<Customer>(this.apiUrlCreate, customerData);
   }
+
+  getCustomerByTcNoEmail(tcNo: string, email: string): Observable<Customer> {
+    const params = new HttpParams()
+      .set('tcNo', tcNo)
+      .set('email', email);
+
+    return this.http.get<Customer>(this.apiUrlGetCustomer, { params });
+  }
+
 
     async getAllReservations(): Promise<Array<Reservation>> {
         return new Promise((resolve, reject) => {

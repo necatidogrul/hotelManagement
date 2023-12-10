@@ -1,11 +1,13 @@
 <h2>Add Guests</h2>
 <form>
-    <input type="text" class="form-control" (keyup.enter)="addTopic(topic)" #topic>
-    <ul class="list-group">
-        <li *ngFor="let topic of topics.controls; let i = index"
-            (click)="removeTopic(i)"
-            class="list-group-item">
-            {{ topic.value }}
-        </li>
-    </ul>
+  <input type="text" class="form-control" (keyup.enter)="addTopic(topic)" #topic>
+  <ul class="list-group">
+    @for (topic of topics.controls; track topic; let i = $index) {
+      <li
+        (click)="removeTopic(i)"
+        class="list-group-item">
+        {{ topic.value }}
+      </li>
+    }
+  </ul>
 </form>

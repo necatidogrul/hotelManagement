@@ -1,32 +1,45 @@
-
-<div class="container-fluid">
-  
+<div class="container-fluid ">
   <h2 style="margin: 10px;">Create Customer</h2>
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" style="margin:10px; width: 30%;">
-      <div class="form-group">
-        <label for="firstName">Firstname</label>
-        <input placeholder="Your firstname" formControlName="firstName" id="firstName" type="text" class="form-control" />
-        <div *ngIf="form.get('firstName')?.touched && form.get('firstName')?.invalid" class="alert alert-danger">
-          Firstname is required.
-        </div>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-group" style="width: 450px;">
+      <label for="firstName">Firstname</label>
+      <input placeholder="Your firstname" formControlName="firstName" id="firstName" type="text" class="form-control" />
+      <div *ngIf="form.get('firstName')?.touched && form.get('firstName')?.invalid" class="alert alert-danger">
+        Firstname is required.
       </div>
-    <br>
-      <div class="form-group">
-        <label for="lastName">Lastname</label>
-        <input placeholder="Your lastname" formControlName="lastName" id="lastName" type="text" class="form-control" />
-        <div *ngIf="form.get('lastName')?.touched && form.get('lastName')?.invalid" class="alert alert-danger">
-          Lastname cannot be empty.
-        </div>
-      </div>
-  
-      <div *ngIf="successMessage" class="alert alert-success">
-        {{ successMessage }}
-      </div>
-      <div *ngIf="errorMessage" class="alert alert-danger">
-        {{ errorMessage }}
-      </div>
+    </div>
   <br>
-      <button class="btn btn-primary" type="submit">Create Customer</button>
-  </form>
-  
+    <div class="form-group" style="width: 450px;">
+      <label for="lastName">Lastname</label>
+      <input placeholder="Your lastname" formControlName="lastName" id="lastName" type="text" class="form-control" />
+      <div *ngIf="form.get('lastName')?.touched && form.get('lastName')?.invalid" class="alert alert-danger">
+        Lastname is required.
+      </div>
+    </div>
+    <br>
+    <div class="form-group" style="width: 450px;">
+        <label for="email">Email</label>
+        <input placeholder="Your email" formControlName="email" id="email" type="text" class="form-control" />
+        <div *ngIf="form.get('email')?.touched && form.get('email')?.invalid" class="alert alert-danger">
+          Email is required.
+        </div>
+      </div>
+      <br>
+      <div class="form-group" style="width: 450px;">
+        <label for="tcNo">TC Number</label>
+        <input placeholder="Your TC Number" formControlName="tcNo" id="tcNo" type="text" class="form-control" />
+        <div *ngIf="form.get('tcNo')?.touched && form.get('tcNo')?.invalid" class="alert alert-danger">
+          TcNo is required.
+        </div>
+      </div>
+      <br>
+    <div *ngIf="successMessage" class="alert alert-success">
+      {{ successMessage }}
+    </div>
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+
+    <button class="btn btn-primary" type="submit">Add Customer</button>
+</form>
 </div>
