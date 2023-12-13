@@ -29,14 +29,15 @@
         <label for="tcNo">TC Number</label>
         <input placeholder="Your TC Number" formControlName="tcNo" id="tcNo" type="text" class="form-control" />
         <div *ngIf="form.get('tcNo')?.touched && form.get('tcNo')?.invalid" class="alert alert-danger">
-          TcNo is required.
+          TC No is required.
         </div>
       </div>
       <br>
-    <div *ngIf="successMessage" class="alert alert-success">
+      
+    <div *ngIf="successMessage" class="alert alert-success" style="width: 450px;">
       {{ successMessage }}
     </div>
-    <div *ngIf="errorMessage" class="alert alert-danger">
+    <div *ngIf="errorMessage" class="alert alert-danger" style="width: 450px;">
       {{ errorMessage }}
     </div>
 

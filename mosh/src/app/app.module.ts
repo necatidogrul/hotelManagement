@@ -11,6 +11,7 @@ import { ReservationListComponent } from './reservation-list/reservation-list.co
 import { FavoriteComponent } from './favorite/favorite.component';
 import { CreateCustomerComponent } from './create-customer/create-customer.component';
 import { NewComponentComponent } from './new-component/new-component.component';
+import { DenemeComponent } from './deneme/deneme.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,10 @@ import { NewComponentComponent } from './new-component/new-component.component';
     ReservationListComponent,
     FavoriteComponent,
     CreateCustomerComponent,
-    NewComponentComponent
+    NewComponentComponent,
+    DenemeComponent
+
+    
   ],
   imports: [
     BrowserModule,

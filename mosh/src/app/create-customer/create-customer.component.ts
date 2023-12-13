@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { CustomerService } from '../customer.service';
+import { Duplicate } from '../common/duplicate';
+import { AppError } from '../common/app-error';
 
 @Component({
   selector: 'app-create-customer',
@@ -12,9 +14,9 @@ export class CreateCustomerComponent {
   successMessage: string | null = null;
   errorMessage: string | null = null;
 
-  constructor(private fb: FormBuilder, private customerService: CustomerService) {
-    this.form = this.fb.group({
-      tcNo: ['', Validators.required],
+  constructor(private formBuilder: FormBuilder, private customerService: CustomerService) {
+    this.form = this.formBuilder.group({
+      tcNo: ['', [Validators.required, Validators.minLength(11)]],
       passportNo: ['string', Validators.required],
       nationality: ['string', Validators.required],
       firstName: ['', Validators.required],
@@ -29,54 +31,55 @@ export class CreateCustomerComponent {
       notes: ['string', Validators.required],
     });
   }
-
-  turkishCharacterValidator(): any {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const value = control.value as string;
-
-      if (/[ğüşıöçĞÜŞİÖÇ]/.test(value)) {
-        return { turkishCharacter: true };
-      }
-
-      return null;
-    };
-  }
-
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     if (this.form.valid) {
-      const customerData = {
-        id: 0,
-        tcNo: this.form.value.tcNo,
-        passportNo: this.form.value.passportNo,
-        nationality: this.form.value.nationality,
-        firstName: this.form.value.firstName,
-        lastName: this.form.value.lastName,
-        middleName: this.form.value.middleName,
-        gender: this.form.value.gender,
-        streetAddress: this.form.value.streetAddress,
-        city: this.form.value.city,
-        country: this.form.value.country,
-        email: this.form.value.email,
-        phone: this.form.value.phone,
-        notes: this.form.value.notes,
-      };
-
+      const tcNo = this.form.value.tcNo;
+      const email = this.form.value.email;
+  
       this.successMessage = null;
       this.errorMessage = null;
-
-      this.customerService.createCustomer(customerData).subscribe({
-        next: (response) => {
-          this.successMessage = 'Customer eklendi!';
-        },
-        error: (error) => {
-          if (error.status === 409) {
-            this.errorMessage = 'Bu müşteri zaten mevcut.';
-          } else {
-            this.errorMessage = 'Müşteri eklenemedi.';
-            console.error('Müşteri oluşturulurken hata oluştu:', error);
-          }
-        },
+  
+      const existingCustomer = await this.customerService.getCustomerByTcNoEmail(tcNo, email).catch(error => {
+        if (error instanceof AppError) {
+          this.errorMessage = 'Müşteri kontrol edilemedi.';
+          console.error('Müşteri kontrol edilemedi: ', error);
+        }
       });
+  
+      if (existingCustomer) {
+        this.errorMessage = 'Bu TC No\'ya sahip müşteri mevcut.';
+      } else {
+        const customerData = {
+          id: 0,
+          tcNo: tcNo,
+          passportNo: this.form.value.passportNo,
+          nationality: this.form.value.nationality,
+          firstName: this.form.value.firstName,
+          lastName: this.form.value.lastName,
+          middleName: this.form.value.middleName,
+          gender: this.form.value.gender,
+          streetAddress: this.form.value.streetAddress,
+          city: this.form.value.city,
+          country: this.form.value.country,
+          email: email,
+          phone: this.form.value.phone,
+          notes: this.form.value.notes,
+        };
+  
+        const createdCustomer = await this.customerService.createCustomer(customerData).toPromise().catch(createError => {
+          if (createError instanceof Duplicate) {
+            this.errorMessage = 'Bu müşteri zaten mevcut.';
+          } else if (createError instanceof AppError) {
+            this.errorMessage = 'Müşteri eklenemedi.';
+            console.error('Müşteri oluşturulurken hata oluştu:', createError);
+          }
+        });
+  
+        if (createdCustomer) {
+          this.successMessage = 'Customer eklendi!';
+        }
+      }
     }
   }
+  
 }
