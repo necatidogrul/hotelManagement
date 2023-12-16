@@ -32,6 +32,9 @@ export class CreateCustomerComponent {
     });
   }
   async onSubmit(): Promise<void> {
+    this.markAllAsTouched();
+
+
     if (this.form.valid) {
       const tcNo = this.form.value.tcNo;
       const email = this.form.value.email;
@@ -80,6 +83,12 @@ export class CreateCustomerComponent {
         }
       }
     }
+  }
+
+  private markAllAsTouched(): void {
+    Object.values(this.form.controls).forEach((control) => {
+      control.markAsTouched();
+    });
   }
   
 }
