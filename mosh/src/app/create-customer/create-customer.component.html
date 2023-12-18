@@ -1,42 +1,109 @@
-<!-- create-customer.component.html -->
-
 <div class="container mt-5">
   <div class="card">
     <div class="card-body">
       <h2 class="card-title mb-4">Create Customer</h2>
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <div class="mb-3" [ngClass]="{'has-error': form.get('firstName')?.touched && form.get('firstName')?.invalid, 'has-success': form.get('firstName')?.touched && form.get('firstName')?.valid}">
-          <label for="firstName" class="form-label">Firstname</label>
-          <input placeholder="Your firstname" formControlName="firstName" id="firstName" type="text" class="form-control" />
-          <div *ngIf="form.get('firstName')?.touched && form.get('firstName')?.invalid" class="alert alert-danger mt-2">
+        <div
+          class="mb-3"
+          [ngClass]="{
+            'has-error':
+              form.get('firstName')?.touched && form.get('firstName')?.invalid,
+            'has-success':
+              form.get('firstName')?.touched && form.get('firstName')?.valid
+          }"
+        >
+          <label for="firstName" class="form-label"><b>Firstname</b></label>
+          <input
+            placeholder="Your firstname"
+            formControlName="firstName"
+            id="firstName"
+            type="text"
+            class="form-control"
+          />
+          <div
+            *ngIf="
+              form.get('firstName')?.touched && form.get('firstName')?.invalid
+            "
+            class="alert alert-danger mt-2"
+          >
             Firstname is required.
           </div>
         </div>
 
-        <div class="mb-3" [ngClass]="{'has-error': form.get('lastName')?.touched && form.get('lastName')?.invalid, 'has-success': form.get('lastName')?.touched && form.get('lastName')?.valid}">
-          <label for="lastName" class="form-label">Lastname</label>
-          <input placeholder="Your lastname" formControlName="lastName" id="lastName" type="text" class="form-control" />
-          <div *ngIf="form.get('lastName')?.touched && form.get('lastName')?.invalid" class="alert alert-danger mt-2">
+        <div
+          class="mb-3"
+          [ngClass]="{
+            'has-error':
+              form.get('lastName')?.touched && form.get('lastName')?.invalid,
+            'has-success':
+              form.get('lastName')?.touched && form.get('lastName')?.valid
+          }"
+        >
+          <label for="lastName" class="form-label"><b>Lastname</b></label>
+          <input
+            placeholder="Your lastname"
+            formControlName="lastName"
+            id="lastName"
+            type="text"
+            class="form-control"
+          />
+          <div
+            *ngIf="
+              form.get('lastName')?.touched && form.get('lastName')?.invalid
+            "
+            class="alert alert-danger mt-2"
+          >
             Lastname is required.
           </div>
         </div>
 
-        <div class="mb-3" [ngClass]="{'has-error': form.get('email')?.touched && form.get('email')?.invalid, 'has-success': form.get('email')?.touched && form.get('email')?.valid}">
-          <label for="email" class="form-label">Email</label>
-          <input placeholder="Your email" formControlName="email" id="email" type="text" class="form-control" />
-          <div *ngIf="form.get('email')?.touched && form.get('email')?.invalid" class="alert alert-danger mt-2">
+        <div
+          class="mb-3"
+          [ngClass]="{
+            'has-error':
+              form.get('email')?.touched && form.get('email')?.invalid,
+            'has-success':
+              form.get('email')?.touched && form.get('email')?.valid
+          }"
+        >
+          <label for="email" class="form-label"><b>Email</b></label>
+          <input
+            placeholder="Your email"
+            formControlName="email"
+            id="email"
+            type="text"
+            class="form-control"
+          />
+          <div
+            *ngIf="form.get('email')?.touched && form.get('email')?.invalid"
+            class="alert alert-danger mt-2"
+          >
             Email is required.
           </div>
         </div>
 
-        <div class="mb-3" [ngClass]="{'has-error': form.get('tcNo')?.touched && form.get('tcNo')?.invalid, 'has-success': form.get('tcNo')?.touched && form.get('tcNo')?.valid}">
-          <label for="tcNo" class="form-label">TC Number</label>
-          <input placeholder="Your TC Number" formControlName="tcNo" id="tcNo" type="text" class="form-control" />
-          <div *ngIf="form.get('tcNo')?.touched && form.get('tcNo')?.invalid" class="alert alert-danger mt-2">
+        <div
+          class="mb-3"
+          [ngClass]="{
+            'has-error': form.get('tcNo')?.touched && form.get('tcNo')?.invalid,
+            'has-success': form.get('tcNo')?.touched && form.get('tcNo')?.valid
+          }"
+        >
+          <label for="tcNo" class="form-label"><b>TC Number</b></label>
+          <input
+            placeholder="Your TC Number"
+            formControlName="tcNo"
+            id="tcNo"
+            type="text"
+            class="form-control"
+          />
+          <div
+            *ngIf="form.get('tcNo')?.touched && form.get('tcNo')?.invalid"
+            class="alert alert-danger mt-2"
+          >
             TC No is required.
           </div>
         </div>
-        
 
         <div *ngIf="successMessage" class="alert alert-success mt-3">
           {{ successMessage }}
@@ -45,7 +112,13 @@
           {{ errorMessage }}
         </div>
 
-        <button class="btn btn-primary mt-3" type="submit" [disabled]="!form.valid">Add Customer</button>
+        <button
+          class="btn btn-primary mt-3"
+          type="submit"
+          [disabled]="!form.valid"
+        >
+          Add Customer
+        </button>
       </form>
     </div>
   </div>

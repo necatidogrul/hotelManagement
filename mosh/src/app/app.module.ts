@@ -22,9 +22,7 @@ import { AppRoutingModule } from './app-routing.module';
     FavoriteComponent,
     CreateCustomerComponent,
     NewComponentComponent,
-    DenemeComponent
-
-    
+    DenemeComponent,
   ],
   imports: [
     BrowserModule,
@@ -33,11 +31,7 @@ import { AppRoutingModule } from './app-routing.module';
     HttpClientModule,
     AppRoutingModule,
   ],
-  providers: [
-    CustomerService,
-  ],
-  bootstrap: [AppComponent]
+  providers: [CustomerService],
+  bootstrap: [AppComponent],
 })
-export class AppModule {
-  
- }
+export class AppModule {}

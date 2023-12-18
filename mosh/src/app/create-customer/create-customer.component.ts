@@ -1,5 +1,11 @@
 import { Component } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { CustomerService } from '../customer.service';
 import { Duplicate } from '../common/duplicate';
 import { AppError } from '../common/app-error';
@@ -14,7 +20,10 @@ export class CreateCustomerComponent {
   successMessage: string | null = null;
   errorMessage: string | null = null;
 
-  constructor(private formBuilder: FormBuilder, private customerService: CustomerService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private customerService: CustomerService
+  ) {
     this.form = this.formBuilder.group({
       tcNo: ['', [Validators.required, Validators.minLength(11)]],
       passportNo: ['string', Validators.required],
@@ -31,26 +40,26 @@ export class CreateCustomerComponent {
       notes: ['string', Validators.required],
     });
   }
+  
   async onSubmit(): Promise<void> {
-    this.markAllAsTouched();
-
-
     if (this.form.valid) {
       const tcNo = this.form.value.tcNo;
       const email = this.form.value.email;
-  
+
       this.successMessage = null;
       this.errorMessage = null;
-  
-      const existingCustomer = await this.customerService.getCustomerByTcNoEmail(tcNo, email).catch(error => {
-        if (error instanceof AppError) {
-          this.errorMessage = 'Müşteri kontrol edilemedi.';
-          console.error('Müşteri kontrol edilemedi: ', error);
-        }
-      });
-  
+
+      const existingCustomer = await this.customerService
+        .getCustomerByTcNoEmail(tcNo, email)
+        .catch((error) => {
+          if (error instanceof AppError) {
+            this.errorMessage = 'Müşteri kontrol edilemedi.';
+            console.error('Müşteri kontrol edilemedi: ', error);
+          }
+        });
+
       if (existingCustomer) {
-        this.errorMessage = 'Bu TC No\'ya sahip müşteri mevcut.';
+        this.errorMessage = "Bu TC No'ya sahip müşteri mevcut.";
       } else {
         const customerData = {
           id: 0,
@@ -68,16 +77,19 @@ export class CreateCustomerComponent {
           phone: this.form.value.phone,
           notes: this.form.value.notes,
         };
-  
-        const createdCustomer = await this.customerService.createCustomer(customerData).toPromise().catch(createError => {
-          if (createError instanceof Duplicate) {
-            this.errorMessage = 'Bu müşteri zaten mevcut.';
-          } else if (createError instanceof AppError) {
-            this.errorMessage = 'Müşteri eklenemedi.';
-            console.error('Müşteri oluşturulurken hata oluştu:', createError);
-          }
-        });
-  
+
+        const createdCustomer = await this.customerService
+          .createCustomer(customerData)
+          .toPromise()
+          .catch((createError) => {
+            if (createError instanceof Duplicate) {
+              this.errorMessage = 'Bu müşteri zaten mevcut.';
+            } else if (createError instanceof AppError) {
+              this.errorMessage = 'Müşteri eklenemedi.';
+              console.error('Müşteri oluşturulurken hata oluştu:', createError);
+            }
+          });
+
         if (createdCustomer) {
           this.successMessage = 'Customer eklendi!';
         }
@@ -90,5 +102,4 @@ export class CreateCustomerComponent {
       control.markAsTouched();
     });
   }
-  
 }

@@ -1,74 +1,76 @@
 @if (reservations.length>0) {
-  <h2 style="margin: 10px;">Last Reservations</h2>
+<h2 style="margin: 10px">Last Reservations</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Last Name</th>
+      <th>Room Type</th>
+      <th>Room Number</th>
+      <th>Arrival</th>
+      <th>Departure</th>
+      <th>Notes</th>
+      <th>Country</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th>Favorite</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (reservation of reservations; track reservation) {
+    <tr>
+      <td>{{ reservation.id }}</td>
+      <td>{{ reservation.customer.firstName | uppercase }}</td>
+      <td>{{ reservation.customer.lastName | uppercase }}</td>
+      <td>{{ reservation.roomType }}</td>
+      <td>{{ reservation.room }}</td>
+      <td>{{ reservation.dateArrival | date }}</td>
+      <td>{{ reservation.dateDeparture | date }}</td>
+      <td>{{ reservation.notes }}</td>
+      <td>{{ reservation.customer.country }}</td>
+      <td>{{ reservation.customer.email }}</td>
+      <td>{{ reservation.customer.phone }}</td>
+      <td>
+        <app-favorite
+          [item]="reservation"
+          (addNote)="addNoteToReservation($event)"
+        ></app-favorite>
+      </td>
+    </tr>
+    }
+  </tbody>
+</table>
+} @else {
+<h2 style="margin-left: 15px; margin-top: 15px">Reservations</h2>
+<h6 style="margin-left: 15px; margin-bottom: 35px">
+  There are no reservations.
+</h6>
+} @if (showNotesSection) {
+<div>
+  <h2>Notes</h2>
   <table class="table">
     <thead>
       <tr>
         <th>ID</th>
         <th>Name</th>
         <th>Last Name</th>
-        <th>Room Type</th>
-        <th>Room Number</th>
-        <th>Arrival</th>
-        <th>Departure</th>
         <th>Notes</th>
-        <th>Country</th>
-        <th>Email</th>
-        <th>Phone</th>
-        <th>Favorite</th>
       </tr>
     </thead>
     <tbody>
       @for (reservation of reservations; track reservation) {
-        <tr>
-          <td>{{ reservation.id }}</td>
-          <td>{{ reservation.customer.firstName | uppercase}}</td>
-          <td>{{ reservation.customer.lastName | uppercase }}</td>
-          <td>{{ reservation.roomType }}</td>
-          <td>{{ reservation.room }}</td>
-          <td>{{ reservation.dateArrival | date }}</td>
-          <td>{{ reservation.dateDeparture | date }}</td>
-          <td>{{ reservation.notes }}
-          </td>
-          <td>{{ reservation.customer.country }}</td>
-          <td>{{ reservation.customer.email }}</td>
-          <td>{{ reservation.customer.phone }}</td>
-          <td>
-            <app-favorite [item]="reservation" (addNote)="addNoteToReservation($event)"></app-favorite>
-          </td>
-        </tr>
+      <tr>
+        <td>{{ reservation.id }}</td>
+        <td>{{ reservation.customer.firstName }}</td>
+        <td>{{ reservation.customer.lastName }}</td>
+        <td>{{ getNoteText(reservation) }}</td>
+      </tr>
       }
     </tbody>
   </table>
-} @else {
-  <h2 style="margin-left: 15px; margin-top: 15px;">Reservations</h2>
-  <h6 style="margin-left: 15px;margin-bottom: 35px;">There are no reservations.</h6>
-}
-@if (showNotesSection) {
-  <div>
-    <h2>Notes</h2>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Last Name</th>
-          <th>Notes</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (reservation of reservations; track reservation) {
-          <tr>
-            <td>{{ reservation.id }}</td>
-            <td>{{ reservation.customer.firstName }}</td>
-            <td>{{ reservation.customer.lastName }}</td>
-            <td>{{ getNoteText(reservation) }}
-            </td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  </div>
+</div>
 }
 
-<hr>
+<hr />
 <app-new-component></app-new-component>

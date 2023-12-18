@@ -1,12 +1,13 @@
 
 
 .has-error input {
-    background-color: #f2dede; /* Kırmızı tonunda */
-    border: 1px solid #ebccd1; /* Kırmızı tonunda kenar çerçevesi */
+    background-color: #f2dede; 
+    border: 1px solid #ebccd1; 
   }
   
   .has-success input {
-    background-color: #dff0d8; /* Yeşil tonunda */
-    border: 1px solid #d6e9c6; /* Yeşil tonunda kenar çerçevesi */
+    background-color: #dff0d8; 
+    border: 1px solid #d6e9c6; 
   }
   
+
