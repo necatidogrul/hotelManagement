@@ -14,10 +14,36 @@ import { AppError } from './common/app-error';
 export class CustomerService {
   private apiUrl = 'http://213.248.166.144:7070/customer/lastReservations';
   private apiUrlCreate = 'http://213.248.166.144:7070/customer/createCustomer';
-  private apiUrlGetCustomer =
-    'http://213.248.166.144:7070/customer/getCustomerByTcNoEmail';
+  private apiUrlGetCustomer = 'http://213.248.166.144:7070/customer/getCustomerByTcNoEmail';
+    private apiUrlSearch = 'http://213.248.166.144:7070/customer/search';
 
   constructor(private http: HttpClient) {}
+
+  async searchCustomer(
+    customerId: string,
+    firstName: string,
+    lastName: string
+  ): Promise<any[]> {
+    let params = new HttpParams();
+    if (customerId) params = params.append('customerId', customerId);
+    if (firstName) params = params.append('firstName', firstName);
+    if (lastName) params = params.append('lastName', lastName);
+  
+    return this.http
+      .get<any[]>(this.apiUrlSearch, { params })
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          if (error.status === 409) {
+            return throwError(() => new Duplicate());
+          } else {
+            return throwError(() => new AppError());
+          }
+        })
+      )
+      .toPromise()
+      .then(response => response || []); // undefined'sa dizi oluştur
+  }
+  
 
   createCustomer(customerData: any): Observable<Customer> {
     return this.http.post<Customer>(this.apiUrlCreate, customerData).pipe(

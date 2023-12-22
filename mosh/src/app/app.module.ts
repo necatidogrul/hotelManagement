@@ -4,7 +4,6 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { CustomerListComponent } from './customer-list/customer-list.component';
 import { CustomerService } from './customer.service';
 import { ReservationListComponent } from './reservation-list/reservation-list.component';
 import { FavoriteComponent } from './favorite/favorite.component';
@@ -12,17 +11,18 @@ import { CreateCustomerComponent } from './create-customer/create-customer.compo
 import { NewComponentComponent } from './new-component/new-component.component';
 import { DenemeComponent } from './deneme/deneme.component';
 import { AppRoutingModule } from './app-routing.module';
+import { SearchCustomerComponent } from './search-customer/search-customer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
-    CustomerListComponent,
     ReservationListComponent,
     FavoriteComponent,
     CreateCustomerComponent,
     NewComponentComponent,
     DenemeComponent,
+    SearchCustomerComponent,
   ],
   imports: [
     BrowserModule,

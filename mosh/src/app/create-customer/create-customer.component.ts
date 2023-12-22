@@ -40,7 +40,7 @@ export class CreateCustomerComponent {
       notes: ['string', Validators.required],
     });
   }
-  
+
   async onSubmit(): Promise<void> {
     if (this.form.valid) {
       const tcNo = this.form.value.tcNo;
