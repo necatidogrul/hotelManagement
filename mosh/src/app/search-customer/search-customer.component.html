@@ -4,7 +4,7 @@
       <h2 class="card-title mb-4">Search Customer</h2>
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="mb-3">
-          <label for="customerId" class="form-label">Customer ID</label>
+          <label for="customerId" class="form-label"><b>Customer ID</b></label>
           <input
             placeholder="Customer ID"
             formControlName="customerId"
@@ -15,7 +15,7 @@
         </div>
 
         <div class="mb-3">
-          <label for="firstName" class="form-label">Firstname</label>
+          <label for="firstName" class="form-label"><b>Firstname</b></label>
           <input
             placeholder="Firstname"
             formControlName="firstName"
@@ -26,7 +26,7 @@
         </div>
 
         <div class="mb-3">
-          <label for="lastName" class="form-label">Lastname</label>
+          <label for="lastName" class="form-label"><b>Lastname</b></label>
           <input
             placeholder="Lastname"
             formControlName="lastName"
