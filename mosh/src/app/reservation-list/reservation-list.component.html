@@ -1,44 +1,34 @@
-@if (reservations.length>0) {
+
+@if (stays.length > 0) {
 <h2 style="margin: 10px">Last Reservations</h2>
 <table class="table">
   <thead>
     <tr>
       <th>ID</th>
-      <th>Name</th>
-      <th>Last Name</th>
       <th>Room Type</th>
       <th>Room Number</th>
       <th>Arrival</th>
       <th>Departure</th>
       <th>Notes</th>
-      <th>Country</th>
-      <th>Email</th>
-      <th>Phone</th>
       <th>Favorite</th>
     </tr>
   </thead>
   <tbody>
-    @for (reservation of reservations; track reservation) {
-    <tr>
-      <td>{{ reservation.id }}</td>
-      <td>{{ reservation.customer.firstName | uppercase }}</td>
-      <td>{{ reservation.customer.lastName | uppercase }}</td>
-      <td>{{ reservation.roomType }}</td>
-      <td>{{ reservation.room }}</td>
-      <td>{{ reservation.dateArrival | date }}</td>
-      <td>{{ reservation.dateDeparture | date }}</td>
-      <td>{{ reservation.notes }}</td>
-      <td>{{ reservation.customer.country }}</td>
-      <td>{{ reservation.customer.email }}</td>
-      <td>{{ reservation.customer.phone }}</td>
+    <tr *ngFor="let stay of stays; trackBy: trackByFunction">
+      <td>{{ stay.customerId }}</td>
+      <td>{{ stay.roomType }}</td>
+      <td>{{ stay.room }}</td>
+      <td>{{ stay.dateArrival | date }}</td>
+      <td>{{ stay.dateDeparture | date }}</td>
+      <td>{{ stay.notes }}</td>
+
       <td>
         <app-favorite
-          [item]="reservation"
-          (addNote)="addNoteToReservation($event)"
+          [item]="stay"
+          (addNote)="addNoteToStay($event)"
         ></app-favorite>
       </td>
     </tr>
-    }
   </tbody>
 </table>
 } @else {
@@ -53,24 +43,19 @@
     <thead>
       <tr>
         <th>ID</th>
-        <th>Name</th>
-        <th>Last Name</th>
         <th>Notes</th>
       </tr>
     </thead>
     <tbody>
-      @for (reservation of reservations; track reservation) {
-      <tr>
-        <td>{{ reservation.id }}</td>
-        <td>{{ reservation.customer.firstName }}</td>
-        <td>{{ reservation.customer.lastName }}</td>
-        <td>{{ getNoteText(reservation) }}</td>
+      <tr *ngFor="let stay of stays; trackBy: trackByFunction">
+        <td>{{ stay.customerId }}</td>
+        <td>{{ getNoteText(stay) }}</td>
       </tr>
-      }
     </tbody>
   </table>
 </div>
 }
 
 <hr />
-<app-new-component></app-new-component>
+
+<app-todays-checkout></app-todays-checkout>

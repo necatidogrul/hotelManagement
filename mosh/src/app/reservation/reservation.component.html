@@ -1,0 +1,155 @@
+<div class="container mt-3">
+  <div class="card">
+    <div class="card-body">
+      <h2 class="card-title mb-4">Create Reservation</h2>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="customerId" class="form-label"><b>Customer ID</b></label>
+          <input
+            formControlName="customerId"
+            id="customerId"
+            type="number"
+            class="form-control"
+            placeholder="Customer ID"
+            [readonly]="true"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="roomType" class="form-label"><b>Room Type</b></label>
+          <select
+            formControlName="roomType"
+            id="roomType"
+            class="form-control"
+            (change)="loadRoomsByType()"
+          >
+            <option value="Double">Double</option>
+            <option value="Triple">Triple</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="room" class="form-label"><b>Room</b></label>
+          <select formControlName="room" id="room" class="form-control">
+            <option *ngFor="let room of rooms$ | async" [value]="room">
+              {{ room }}
+            </option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="dateArrival" class="form-label"
+            ><b>Checkin Date</b></label
+          >
+          <input
+            formControlName="dateArrival"
+            id="dateArrival"
+            type="date"
+            class="form-control"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="dateDeparture" class="form-label"
+            ><b>Checkout Date</b></label
+          >
+          <input
+            formControlName="dateDeparture"
+            id="dateDeparture"
+            type="date"
+            class="form-control"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="notes" class="form-label"><b>Notes</b></label>
+          <input
+            formControlName="notes"
+            id="notes"
+            type="text"
+            class="form-control"
+            placeholder="Notes"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="source" class="form-label"><b>Source</b></label>
+          <input
+            formControlName="source"
+            id="source"
+            type="text"
+            class="form-control"
+            placeholder="Source"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="paymentAmount" class="form-label"
+            ><b>Payment Amount</b></label
+          >
+          <input
+            formControlName="paymentAmount"
+            id="paymentAmount"
+            type="number"
+            class="form-control"
+            placeholder="Payment Amount"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="paymentAmount" class="form-label"><b>Add Guest</b></label>
+          <app-add-guests></app-add-guests>
+        </div>
+
+        <button
+          class="btn btn-primary mt-3"
+          type="submit"
+          [disabled]="!form.valid"
+        >
+          Create Reservation
+        </button>
+      </form>
+
+      <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+        {{ errorMessage }}
+      </div>
+      <div *ngIf="successMessage" class="alert alert-success mt-3">
+        {{ successMessage }}
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h2 class="card-title m-3">Customer Reservations</h2>
+
+    <div
+      *ngIf="customerReservations && customerReservations.length > 0"
+      class="table-responsive"
+    >
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Reservation ID</th>
+            <th>Room Type</th>
+            <th>Room</th>
+            <th>Checkin Date</th>
+            <th>Checkout Date</th>
+            <th>Notes</th>
+            <th>Source</th>
+            <th>Payment Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let reservation of customerReservations">
+            <td>{{ reservation.customerId }}</td>
+            <td>{{ reservation.roomType }}</td>
+            <td>{{ reservation.room }}</td>
+            <td>{{ reservation.dateArrival | date : "yyyy-MM-dd" }}</td>
+            <td>{{ reservation.dateDeparture | date : "yyyy-MM-dd" }}</td>
+            <td>{{ reservation.notes }}</td>
+            <td>{{ reservation.source }}</td>
+            <td>{{ reservation.paymentAmount }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

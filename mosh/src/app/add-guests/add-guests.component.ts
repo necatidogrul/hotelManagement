@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'app-new-component',
-  templateUrl: './new-component.component.html',
-  styleUrls: ['./new-component.component.css'],
+  selector: 'app-add-guests',
+  templateUrl: './add-guests.component.html',
+  styleUrls: ['./add-guests.component.css'],
 })
-export class NewComponentComponent {
+export class AddGuestsComponent {
   form = new FormGroup({
     topics: new FormArray([]),
   });

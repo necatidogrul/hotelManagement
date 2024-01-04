@@ -7,8 +7,4 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title: any;
-
-  onFavoriteToggled(isFavorite: boolean) {
-    console.log('Favorite toggled:', isFavorite);
-  }
 }

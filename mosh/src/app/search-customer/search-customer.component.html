@@ -59,6 +59,7 @@
               <th>First Name</th>
               <th>Last Name</th>
               <th>Email</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -68,6 +69,14 @@
               <td>{{ result.firstName }}</td>
               <td>{{ result.lastName }}</td>
               <td>{{ result.email }}</td>
+              <td>
+                <button
+                  class="btn btn-primary"
+                  (click)="addReservation(result.id)"
+                >
+                  Add Reservation
+                </button>
+              </td>
             </tr>
           </tbody>
         </table>

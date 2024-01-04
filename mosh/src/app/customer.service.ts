@@ -6,16 +6,26 @@ import {
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 import { Customer } from './customer.model';
-import { Reservation } from './reservation.model';
+import { Stay } from './stay.model';
 import { Duplicate } from './common/duplicate';
 import { AppError } from './common/app-error';
+import { ServerError } from './common/server-error';
 
 @Injectable()
 export class CustomerService {
-  private apiUrl = 'http://213.248.166.144:7070/customer/lastReservations';
+  private apiUrl = 'http://213.248.166.144:7070/stay/lastReservations';
   private apiUrlCreate = 'http://213.248.166.144:7070/customer/createCustomer';
-  private apiUrlGetCustomer = 'http://213.248.166.144:7070/customer/getCustomerByTcNoEmail';
-    private apiUrlSearch = 'http://213.248.166.144:7070/customer/search';
+  private apiUrlGetCustomer =
+    'http://213.248.166.144:7070/customer/getCustomerByTcNoEmail';
+  private apiUrlSearch = 'http://213.248.166.144:7070/customer/search';
+  private apiUrlCreateReservation =
+    'http://213.248.166.144:7070/customer/createReservation';
+  private apiUrlRoomTypes = 'http://213.248.166.144:7070/customer/roomsByType';
+  private apiUrlRoomsByType =
+    'http://213.248.166.144:7070/customer/roomsByType';
+  private apiUrlCustomerReserv = 'http://213.248.166.144:7070';
+  private apiUrlCustomerReservations =
+    'http://213.248.166.144:7070/customer/reservations';
 
   constructor(private http: HttpClient) {}
 
@@ -28,7 +38,7 @@ export class CustomerService {
     if (customerId) params = params.append('customerId', customerId);
     if (firstName) params = params.append('firstName', firstName);
     if (lastName) params = params.append('lastName', lastName);
-  
+
     return this.http
       .get<any[]>(this.apiUrlSearch, { params })
       .pipe(
@@ -41,12 +51,70 @@ export class CustomerService {
         })
       )
       .toPromise()
-      .then(response => response || []); // undefined'sa dizi oluştur
+      .then((response) => response || []);
   }
-  
 
-  createCustomer(customerData: any): Observable<Customer> {
-    return this.http.post<Customer>(this.apiUrlCreate, customerData).pipe(
+  getRoomTypes(): Observable<string[]> {
+    return this.http.get<string[]>(this.apiUrlRoomTypes).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 500) {
+          return throwError(() => new ServerError());
+        } else {
+          return throwError(() => new AppError());
+        }
+      })
+    );
+  }
+
+  getRoomsByType(roomType: string): Observable<any[]> {
+    let params = new HttpParams();
+    params = params.append('roomType', roomType);
+
+    return this.http.get<any[]>(this.apiUrlRoomsByType, { params }).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 500) {
+          return throwError(() => new ServerError());
+        } else {
+          return throwError(() => new AppError());
+        }
+      })
+    );
+  }
+
+  getCustomerReservations(customerId: string): Observable<Stay[]> {
+    const params = new HttpParams().set('customerId', customerId);
+
+    return this.http
+      .get<Stay[]>(this.apiUrlCustomerReservations, { params })
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          if (error.status === 500) {
+            return throwError(() => new ServerError());
+          } else {
+            return throwError(() => new AppError());
+          }
+        })
+      );
+  }
+
+  createReservation(reservationData: any): Observable<Stay> {
+    return this.http
+      .post<Stay>(this.apiUrlCreateReservation, reservationData)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          if (error.status === 409) {
+            return throwError(() => new Duplicate());
+          } else {
+            return throwError(() => new AppError());
+          }
+        })
+      );
+  }
+
+
+
+  createCustomer(customerData: any): Observable<string> {
+    return this.http.post<string>(this.apiUrlCreate, customerData).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 409) {
           return throwError(() => new Duplicate());
@@ -78,9 +146,9 @@ export class CustomerService {
       .toPromise();
   }
 
-  async getAllReservations(): Promise<Array<Reservation>> {
+  async getAllStays(): Promise<Array<Stay>> {
     return new Promise((resolve, reject) => {
-      let reservationlist: Array<Reservation> = [];
+      let reservationlist: Array<Stay> = [];
       this.http.get(this.apiUrl).subscribe((response) => {
         if (!response) {
           reject();
@@ -92,7 +160,7 @@ export class CustomerService {
           Object.values(response).forEach((value) => {
             const reservationDate = new Date(value['dateArrival']);
             if (reservationDate.getTime() > oneWeekAgo.getTime()) {
-              let reservation = new Reservation(
+              let reservation = new Stay(
                 value['id'],
                 value['customerId'],
                 value['roomType'],
@@ -101,10 +169,7 @@ export class CustomerService {
                 value['dateDeparture'],
                 value['notes'],
                 value['source'],
-                value['paymentAmount'],
-                value['dateUpdated'],
-                value['status'],
-                value['customer']
+                value['paymentAmount']
               );
               reservationlist.push(reservation);
             }
@@ -113,5 +178,27 @@ export class CustomerService {
         }
       });
     });
+  }
+
+  getTodaysCheckoutStays(): Observable<Stay[]> {
+    const url = 'http://213.248.166.144:7070/stay/todaysCheckout';
+    return this.http.get<Stay[]>(url).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 500) {
+          return throwError(() => new ServerError(error));
+        } else {
+          return throwError(() => new AppError(error));
+        }
+      })
+    );
+  }
+
+  getTodaysCheckinStays(): Observable<Stay[]> {
+    const url = 'http://213.248.166.144:7070/stay/todaysCheckin';
+    return this.http.get<Stay[]>(url).pipe(
+      catchError((error: HttpErrorResponse) => {
+        return throwError(() => new AppError());
+      })
+    );
   }
 }

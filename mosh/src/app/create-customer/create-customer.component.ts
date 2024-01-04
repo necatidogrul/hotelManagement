@@ -97,9 +97,5 @@ export class CreateCustomerComponent {
     }
   }
 
-  private markAllAsTouched(): void {
-    Object.values(this.form.controls).forEach((control) => {
-      control.markAsTouched();
-    });
-  }
+
 }

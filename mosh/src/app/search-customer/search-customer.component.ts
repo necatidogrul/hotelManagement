@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomerService } from '../customer.service';
 import { AppError } from '../common/app-error';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-search-customer',
@@ -15,7 +16,8 @@ export class SearchCustomerComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private customerService: CustomerService
+    private customerService: CustomerService,
+    private router: Router
   ) {
     this.form = this.formBuilder.group({
       customerId: [''],
@@ -45,5 +47,9 @@ export class SearchCustomerComponent {
         }
       }
     }
+  }
+
+  addReservation(customerId: number): void {
+    this.router.navigate(['/new-reservation', customerId]);
   }
 }

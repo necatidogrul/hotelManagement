@@ -1,0 +1,41 @@
+<h2 style="margin: 10px">Today's Checkouts</h2>
+
+@if(todaysCheckoutStays){
+
+<div *ngIf="errorMessage" class="mt-3">
+  {{ errorMessage }}
+</div>
+
+<table *ngIf="!errorMessage" class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Customer ID</th>
+      <th>Room Type</th>
+      <th>Room</th>
+      <th>Date Arrival</th>
+      <th>Date Departure</th>
+      <th>Notes</th>
+      <th>Source</th>
+      <th>Payment Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let stay of todaysCheckoutStays">
+      <td>{{ stay.id }}</td>
+      <td>{{ stay.customerId }}</td>
+      <td>{{ stay.roomType }}</td>
+      <td>{{ stay.room }}</td>
+      <td>{{ stay.dateArrival }}</td>
+      <td>{{ stay.dateDeparture }}</td>
+      <td>{{ stay.notes }}</td>
+      <td>{{ stay.source }}</td>
+      <td>{{ stay.paymentAmount }}</td>
+    </tr>
+  </tbody>
+</table>
+
+} @else{
+
+<h6 style="margin-left: 15px; margin-bottom: 35px">Server hatası</h6>
+}

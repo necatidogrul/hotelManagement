@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CustomerService } from '../customer.service';
-import { Reservation } from '../reservation.model';
+import { Stay } from '../stay.model';
 
 @Component({
   selector: 'reservation-list',
@@ -8,65 +8,56 @@ import { Reservation } from '../reservation.model';
   styleUrls: ['./reservation-list.component.css'],
 })
 export class ReservationListComponent {
-  reservations: Array<Reservation> = [];
-  notes: { [key: number]: { reservation: Reservation; text: string } } = {};
+  stays: Array<Stay> = [];
+  notes: { [key: number]: { stay: Stay; text: string } } = {};
   showNotesSection: boolean = false;
+
   constructor(private customerService: CustomerService) {
-    this.loadReservations();
+    this.loadStays();
   }
 
-  loadReservations() {
-    this.customerService.getAllReservations().then((response) => {
-      this.reservations = response;
+  loadStays() {
+    this.customerService.getAllStays().then((response) => {
+      this.stays = response;
     });
   }
 
-  addNote(reservation: Reservation) {
-    const noteText = prompt('Enter a note for the reservation:');
+  addNote(stay: Stay) {
+    const noteText = prompt('Enter a note for the stay:');
     if (noteText !== null) {
-      if (!this.notes[reservation.id]) {
-        this.notes[reservation.id] = { reservation, text: noteText };
+      if (!this.notes[stay.customerId]) {
+        this.notes[stay.customerId] = { stay, text: noteText };
       } else {
-        this.notes[reservation.id].text += '\n' + noteText;
+        this.notes[stay.customerId].text += '\n' + noteText;
       }
       this.showNotesSection = true;
-
-      const updatedReservation = this.reservations.find(
-        (res) => res.id === reservation.id
-      );
-      if (updatedReservation) {
-        updatedReservation.notes = this.notes[reservation.id].text;
-      }
     }
   }
 
-  getNotesList(): Array<{ reservation: Reservation; text: string }> {
+  getNotesList(): Array<{ stay: Stay; text: string }> {
     return Object.values(this.notes) as Array<{
-      reservation: Reservation;
+      stay: Stay;
       text: string;
     }>;
   }
 
-  getNoteText(reservation: Reservation): string {
-    return this.notes[reservation.id] ? this.notes[reservation.id].text : '';
+  getNoteText(stay: Stay): string {
+    return this.notes[stay.customerId] ? this.notes[stay.customerId].text : '';
   }
 
-  addNoteToReservation(reservation: Reservation) {
-    const noteText = prompt('Enter a note for the reservation:');
+  addNoteToStay(stay: Stay) {
+    const noteText = prompt('Enter a note for the stay:');
     if (noteText !== null) {
-      if (!this.notes[reservation.id]) {
-        this.notes[reservation.id] = { reservation, text: noteText };
+      if (!this.notes[stay.customerId]) {
+        this.notes[stay.customerId] = { stay, text: noteText };
       } else {
-        this.notes[reservation.id].text += '\n' + noteText;
+        this.notes[stay.customerId].text += '\n' + noteText;
       }
       this.showNotesSection = true;
-
-      const updatedReservation = this.reservations.find(
-        (res) => res.id === reservation.id
-      );
-      if (updatedReservation) {
-        updatedReservation.notes = this.notes[reservation.id].text;
-      }
     }
+  }
+
+  trackByFunction(index: number, item: Stay): number {
+    return item.customerId;
   }
 }
